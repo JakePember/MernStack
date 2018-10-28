@@ -9,8 +9,32 @@ import { Link, withRouter } from 'react-router-dom';
 import auth from '../auth/auth-helper';
 
 const isActive = (history, path) => {
-  if (history.location.pathname == path) { return { color: '#ffa726' }; }
+  if (history.location.pathname === path) { return { color: '#ffa726' }; }
   return { color: '#ffffff' };
+};
+
+const notSignedIn = function notSignedIn(history) {
+  return (
+    <span>
+      <Link to="/signup">
+        <Button style={isActive(history, '/signup')}>Sign up</Button>
+      </Link>
+      <Link to="/signin">
+        <Button style={isActive(history, '/signin')}>Sign In</Button>
+      </Link>
+    </span>
+  );
+};
+
+const signedIn = function signedIn(history) {
+  return (
+    <span>
+      <Link to={`/user/${auth.isAuthenticated().user.id}`}>
+        <Button style={isActive(history, `/user/${auth.isAuthenticated().user.id}`)}>My Profile</Button>
+      </Link>
+      <Button color="inherit" onClick={() => { auth.signout(() => history.push('/')); }}>Sign out</Button>
+    </span>
+  );
 };
 const Menu = withRouter(({ history }) => (
   <AppBar position="static">
@@ -21,29 +45,7 @@ const Menu = withRouter(({ history }) => (
           <HomeIcon />
         </IconButton>
       </Link>
-      {
-        !auth.isAuthenticated() && (
-        <span>
-          <Link to="/signup">
-            <Button style={isActive(history, '/signup')}>Sign up</Button>
-          </Link>
-          <Link to="/signin">
-            <Button style={isActive(history, '/signin')}>Sign In</Button>
-          </Link>
-        </span>
-        )
-      }
-      {
-        auth.isAuthenticated() && (
-        <span>
-          <Link to={`/user/${auth.isAuthenticated().user._id}`}>
-            <Button style={isActive(history, `/user/${auth.isAuthenticated().user._id}`)}>My Profile</Button>
-          </Link>
-          <Button color="inherit" onClick={() => { auth.signout(() => history.push('/')); }}>Sign out</Button>
-
-        </span>
-        )
-      }
+      { auth.isAuthenticated() ? signedIn(history) : notSignedIn(history) }
     </Toolbar>
   </AppBar>
 ));

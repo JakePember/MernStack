@@ -33,6 +33,8 @@ class Home extends Component {
   constructor(props) {
     super(props);
 
+    // this.homePageNotSignedIn = this.homePageNotSignedIn.bind(this);
+
     this.state = {
       defaultPage: true,
     };
@@ -45,6 +47,36 @@ class Home extends Component {
   componentWillReceiveProps() {
     this.init();
   }
+
+  notSignedIn = function notSignedIn(classes) { // Display this page if the user is NOT authorized
+    return (
+      <Grid container spacing={24}>
+        <Grid item xs={12}>
+          <Card className={classes.card}>
+            <Typography type="headline" component="h2" className={classes.title}>Home Page</Typography>
+            <CardMedia className={classes.media} image={seashellImg} title="Unicorn Shells" />
+            <CardContent>
+              <Typography type="body1" component="p">Welcome to the MERN Social home page.</Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
+    );
+  };
+
+  signedIn = function signedIn() { // Display this page if the user is authorized
+    return (
+      <Grid container spacing={24}>
+        <Grid item xs={8} sm={7}>
+          <Newsfeed />
+        </Grid>
+        <Grid item xs={6} sm={5}>
+          <FindPeople />
+        </Grid>
+      </Grid>
+    );
+  }
+
 
   init() { // Makes sure there is a valid Auth token
     if (auth.isAuthenticated()) {
@@ -60,33 +92,7 @@ class Home extends Component {
     const { defaultPage } = this.state;
     return (
       <div className={classes.root}>
-        {defaultPage
-          && (
-          <Grid container spacing={24}>
-            <Grid item xs={12}>
-              <Card className={classes.card}>
-                <Typography type="headline" component="h2" className={classes.title}>Home Page</Typography>
-                <CardMedia className={classes.media} image={seashellImg} title="Unicorn Shells" />
-                <CardContent>
-                  <Typography type="body1" component="p">Welcome to the MERN Social home page.</Typography>
-                </CardContent>
-              </Card>
-            </Grid>
-          </Grid>
-          )
-        }
-        {!defaultPage
-          && (
-          <Grid container spacing={24}>
-            <Grid item xs={8} sm={7}>
-              <Newsfeed />
-            </Grid>
-            <Grid item xs={6} sm={5}>
-              <FindPeople />
-            </Grid>
-          </Grid>
-          )
-        }
+        {defaultPage ? this.notSignedIn(classes) : this.signedIn()}
       </div>
     );
   }
