@@ -30,24 +30,28 @@ const styles = theme => ({
 });
 
 class Home extends Component {
-  state = {
-    defaultPage: true,
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      defaultPage: true,
+    };
   }
 
-  init = () => {
+  componentDidMount() {
+    this.init();
+  }
+
+  componentWillReceiveProps() {
+    this.init();
+  }
+
+  init() { // Makes sure there is a valid Auth token
     if (auth.isAuthenticated()) {
-      this.setState({ defaultPage: false });
+      this.setState({ defaultPage: false }); // Show signed in page
     } else {
-      this.setState({ defaultPage: true });
+      this.setState({ defaultPage: true }); // Show not signed in page
     }
-  }
-
-  componentWillReceiveProps = () => {
-    this.init();
-  }
-
-  componentDidMount = () => {
-    this.init();
   }
 
   render() {
