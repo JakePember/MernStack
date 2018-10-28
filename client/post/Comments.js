@@ -89,12 +89,8 @@ class Comments extends Component {
         <span className={classes.commentDate}>
           {(new Date(item.created)).toDateString()}
           {' '}
-
-
-
-|
-          {auth.isAuthenticated().user._id === item.postedBy._id
-              && <Icon onClick={this.deleteComment(item)} className={classes.commentDelete}>delete</Icon> }
+          {auth.isAuthenticated().user.id === item.postedBy.id
+            ? <Icon onClick={this.deleteComment(item)} className={classes.commentDelete}>delete</Icon> : ''}
         </span>
       </p>
     );
@@ -107,26 +103,26 @@ class Comments extends Component {
               }
           title={(
             <TextField
-        onKeyDown={this.addComment}
-        multiline
-        value={this.state.text}
-        onChange={this.handleChange('text')}
-        placeholder="Write something ..."
-        className={classes.commentField}
-        margin="normal"
-      />
+              onKeyDown={this.addComment}
+              multiline
+              value={this.state.text}
+              onChange={this.handleChange('text')}
+              placeholder="Write something ..."
+              className={classes.commentField}
+              margin="normal"
+            />
 )}
           className={classes.cardHeader}
         />
         { this.props.comments.map((item, i) => (
           <CardHeader
             avatar={
-    <Avatar className={classes.smallAvatar} src={`/api/users/photo/${item.postedBy._id}`} />
+              <Avatar className={classes.smallAvatar} src={`/api/users/photo/${item.postedBy._id}`} />
                       }
             title={commentBody(item)}
             className={classes.cardHeader}
             key={i}
-/>
+          />
         ))
         }
       </div>

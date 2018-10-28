@@ -114,7 +114,7 @@ class Post extends Component {
               && (
               <IconButton onClick={this.deletePost}>
                 <DeleteIcon />
-                            </IconButton>
+              </IconButton>
               )
             }
           title={<Link to={`/user/${this.props.post.postedBy._id}`}>{this.props.post.postedBy.name}</Link>}
