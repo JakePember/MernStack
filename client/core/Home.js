@@ -33,8 +33,6 @@ class Home extends Component {
   constructor(props) {
     super(props);
 
-    // this.homePageNotSignedIn = this.homePageNotSignedIn.bind(this);
-
     this.state = {
       defaultPage: true,
     };
@@ -76,7 +74,6 @@ class Home extends Component {
       </Grid>
     );
   }
-
 
   init() { // Makes sure there is a valid Auth token
     if (auth.isAuthenticated()) {
